@@ -16,11 +16,17 @@ namespace InformixConnector
             connection.Open();
         }
 
-        public void addHuman(Human human)
+        public int addHuman(Human human)
         {
             string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
             IfxCommand command = new IfxCommand(cmd, connection);
             command.ExecuteNonQuery();
+            string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
+            IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
+            IfxDataReader reader = findLastIdCommand.ExecuteReader();
+            reader.Read();
+            int lastId = reader.GetInt32(0);
+            return lastId;
         }
         public void editHuman(Human human)
         {

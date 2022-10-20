@@ -7,6 +7,7 @@
     width: '85%',
     modal: true,
     height: '85%',
+    closable: false,
     autoShow: true,
     
     initComponent: function() {

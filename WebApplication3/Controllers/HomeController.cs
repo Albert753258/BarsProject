@@ -25,8 +25,8 @@ namespace WebApplication3.Controllers
 
         public ActionResult AddHuman(string surname, string fname, string patronymic, string birthday)
         {
-            MvcApplication.repository.addHuman(new Human(surname, fname, patronymic, birthday));
-            return Content("");
+            //MvcApplication.repository.addHuman(new Human(surname, fname, patronymic, birthday));
+            return Content(MvcApplication.repository.addHuman(new Human(surname, fname, patronymic, birthday)) + "");
         }
         public ActionResult DelHuman(string id)
         {
@@ -40,5 +40,6 @@ namespace WebApplication3.Controllers
         }
     }
 }
+//todo изайн кнопок, формат даты через точк, обновление в сторе, id при вставке
 //{
 // 'success': true, 'users': [{'userID': 1, 'name': 'Вася', 'surname': 'Иванов', 'birthday': '10/08/1991', 'patronymic': 'Иванович'}

@@ -5,6 +5,7 @@ Ext.define('BarsProject.view.SearchWindow', {
     title: 'Условия поиска',
     layout: 'fit',
     width: '85%',
+    closable: false,
     modal: true,
     height: '50%',
     autoShow: true,

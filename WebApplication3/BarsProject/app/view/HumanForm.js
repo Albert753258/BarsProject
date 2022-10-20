@@ -5,6 +5,7 @@
     title: 'Анкета гражданина',
     layout: 'fit',
     width: '85%',
+    closable: false,
     modal: true,
     action: "addnewhuman",
     height: '50%',
