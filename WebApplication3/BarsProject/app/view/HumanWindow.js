@@ -27,29 +27,29 @@
                     align: 'stretch'
                 },
                 items: [{
-                    flex: 1,
+                    scale: 'large',
                     text: 'Выход',
                     handler: function (){
                         this.up('window').close()
                     },
                     xtype: 'button'
                 },{
-                    flex: 1,
+                    scale: 'large',
                     text: 'Добавить',
                     action: 'add',
                     xtype: 'button'
                 },{
-                    flex: 1,
+                    scale: 'large',
                     text: 'Изменить',
                     action: 'edit',
                     xtype: 'button'
                 },{
-                    flex: 1,
+                    scale: 'large',
                     text: 'Удалить',
                     action: 'delete',
                     xtype: 'button'
                 },{
-                    flex: 1,
+                    scale: 'large',
                     text: 'Печать',
                     action: 'print',
                     xtype: 'button'

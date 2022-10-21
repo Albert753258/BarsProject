@@ -38,6 +38,11 @@ namespace WebApplication3
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "EditHuman", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "GenReport",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "GenReport", id = UrlParameter.Optional }
+            );
         }
     }
 }

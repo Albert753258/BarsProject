@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2022 17:20:40" ReportInfo.Modified="10/21/2022 17:21:59" ReportInfo.CreatorVersion="2022.3.0.0">
+  <Styles Name="Standard">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <BusinessObjectDataSource Name="Humans" ReferenceName="Humans"  DataType="System.Collections.ArrayList" Enabled="true">
+      <Column Name="fname" DataType="System.String"/>
+      <Column Name="surname" DataType="System.String"/>
+      <Column Name="patronymic" DataType="System.String"/>
+      <Column Name="birthday" DataType="System.String"/>
+    </BusinessObjectDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Data" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text3" Width="179.55" Height="18.9" Text="Surname" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text5" Left="179.55" Width="179.55" Height="18.9" Text="Fname" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text7" Left="359.1" Width="179.55" Height="18.9" Text="Patronymic" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text9" Left="538.65" Width="179.55" Height="18.9" Text="Birthday" Font="Arial, 10pt, style=Bold" Style="Header"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="18.9" EvenStyle="EvenRows" DataSource="Data">
+      <TextObject Name="Text2" Width="179.55" Height="18.9" Text="[Humans.surname]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text4" Left="179.55" Width="179.55" Height="18.9" Text="[Humans.fname]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text6" Left="359.1" Width="179.55" Height="18.9" Text="[Humans.patronymic]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text8" Left="538.65" Width="179.55" Height="18.9" Text="[Humans.birthday]" Font="Arial, 10pt" Style="Data"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="97.05" Width="718.2" Height="18.9">
+      <TextObject Name="Text10" Width="718.2" Height="18.9" Dock="Fill" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

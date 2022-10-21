@@ -1,4 +1,7 @@
-﻿namespace InformixConnector
+﻿using System.Globalization;
+using Newtonsoft.Json;
+
+namespace InformixConnector
 {
     public class Human
     {
@@ -7,7 +10,7 @@
         public string fname;
         public string patronymic;
         public string birthday;
-
+[JsonConstructor]
         public Human(int id, string surname, string fname, string patronymic, string birthday)
         {
             this.id = id;
@@ -26,7 +29,8 @@
 
         public string toString()
         {
-            return $"'{surname}', '{fname}', '{patronymic}', '{birthday}'";
+            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            return $"'{textInfo.ToUpper(surname)}', '{textInfo.ToUpper(fname)}', '{textInfo.ToUpper(patronymic)}', '{textInfo.ToUpper(birthday)}'";
         }
     }
 }

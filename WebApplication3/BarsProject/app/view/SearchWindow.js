@@ -33,6 +33,12 @@ Ext.define('BarsProject.view.SearchWindow', {
                     name: 'patronymic'
                 },{
                     xtype: 'datefield',
+                    fieldLabel: 'Дата рождения с:',
+                    format: 'd.m.Y',
+                    name: 'birthday'
+                },{
+                    xtype: 'datefield',
+                    fieldLabel: 'Дата рождения по:',
                     format: 'd.m.Y',
                     name: 'birthday'
                 }]
@@ -43,15 +49,15 @@ Ext.define('BarsProject.view.SearchWindow', {
                     align: 'stretch'
                 },
                 items: [{
-                    flex: 1,
                     text: 'Выход',
+                    scale: 'large',
                     handler: function (){
                         this.up('window').close()
                     },
                     xtype: 'button'
                 },{
-                    flex: 1,
                     text: 'Начать поиск',
+                    scale: 'large',
                     action: 'search',
                     xtype: 'button'
                 }]

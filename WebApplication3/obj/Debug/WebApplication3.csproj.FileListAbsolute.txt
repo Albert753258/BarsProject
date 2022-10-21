@@ -75,3 +75,7 @@ C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\obj\Debug\WebAppli
 C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\obj\Debug\WebApplication3.dll
 C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\obj\Debug\WebApplication3.pdb
 C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\bin\IBM.Data.Informix.dll
+C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\bin\FastReport.Compat.dll
+C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\bin\FastReport.dll
+C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\bin\FastReport.xml
+C:\Users\albert\RiderProjects\WebApplication3\WebApplication3\bin\FastReport.Data.Json.dll

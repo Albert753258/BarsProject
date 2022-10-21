@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.WebPages;
 using IBM.Data.Informix;
 using Microsoft.Ajax.Utilities;
@@ -16,7 +17,7 @@ namespace InformixConnector
             connection.Open();
         }
 
-        public int addHuman(Human human)
+        public string addHuman(Human human)
         {
             string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
             IfxCommand command = new IfxCommand(cmd, connection);
@@ -26,7 +27,8 @@ namespace InformixConnector
             IfxDataReader reader = findLastIdCommand.ExecuteReader();
             reader.Read();
             int lastId = reader.GetInt32(0);
-            return lastId;
+            string toReturn = $"{{ success: true, id: '{lastId}'}}";
+            return toReturn;
         }
         public void editHuman(Human human)
         {
@@ -34,24 +36,12 @@ namespace InformixConnector
             IfxCommand command = new IfxCommand(cmd, connection);
             command.ExecuteNonQuery();
         }
-
-        // public String searchHumanBySurname(string surname)
-        // {
-        //     IfxCommand cmd = new IfxCommand($"select * from {Settings.tableName} where last_name='{surname}'", connection);
-        //     IfxDataReader reader = cmd.ExecuteReader();
-        //     List<Human> humans = new List<Human>();
-        //     while (reader.Read())
-        //     {
-        //         humans.Add(new Human(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4)));
-        //     }
-        //
-        //     string toReturn = JsonConvert.SerializeObject(humans);
-        //     return toReturn;
-        // }
-        public String searchHuman(string surname, string fname, string patronymic, string birthday)
+        
+        public String searchHuman(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo)
         {
+            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
             string command = $"select * from {Settings.tableName} where ";
-            if (surname.IsEmpty() && fname.IsEmpty() && patronymic.IsEmpty() && birthday.IsEmpty())
+            if (surname.IsEmpty() && fname.IsEmpty() && patronymic.IsEmpty() && birthdayFrom.IsEmpty() && birthdayTo.IsEmpty())
             {
                 command = $"select * from {Settings.tableName}";
             }
@@ -59,19 +49,32 @@ namespace InformixConnector
             {
                 if (!surname.IsEmpty())
                 {
-                    command += $"last_name='{surname}' AND";
+                    command += $"last_name matches '{textInfo.ToUpper(surname)}' AND";
                 }
                 if (!fname.IsEmpty())
                 {
-                    command += $" first_name='{fname}' AND";
+                    command += $" first_name matches '{textInfo.ToUpper(fname)}' AND";
                 }
                 if (!patronymic.IsEmpty())
                 {
-                    command += $" patronymic='{patronymic}' AND";
+                    command += $" patronymic matches '{textInfo.ToUpper(patronymic)}' AND";
                 }
-                if (!birthday.IsEmpty())
+                if (!birthdayFrom.IsEmpty())
                 {
-                    command += $" birthday='{birthday}'";
+                    if (!birthdayTo.IsEmpty())
+                    {
+                        command += $" birthday between '{birthdayFrom}' and '{birthdayTo}'";
+                    }
+                    else
+                    {
+                        command += $" birthday > '{textInfo.ToUpper(birthdayFrom)}'";
+                    }
+                    //
+                }
+                else if (!birthdayTo.IsEmpty())
+                {
+                    command += $" birthday > '{textInfo.ToUpper(birthdayTo)}'";
+                    //
                 }
             }
 
@@ -96,11 +99,6 @@ namespace InformixConnector
             string cmd = $"delete from {Settings.tableName} where id={id}";
             IfxCommand command = new IfxCommand(cmd, connection);
             command.ExecuteNonQuery();
-        }
-
-        public void stop()
-        {
-            connection.Close();
         }
     }
 }

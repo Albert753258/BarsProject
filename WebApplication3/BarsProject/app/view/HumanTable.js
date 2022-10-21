@@ -20,7 +20,7 @@
             header: 'Дата рождения',
             dataIndex: 'birthday',
             xtype:'datecolumn',
-            format: 'd/m/Y',
+            format: 'd.m.Y',
             flex:1
         }];
 

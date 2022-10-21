@@ -43,12 +43,19 @@
                         name: 'birthday'
                     }]
                 })]
-            }), {
+            }),Ext.create('Ext.panel.Panel', {
                 flex: 1,
-                text: 'Выход',
-                action: this.action,
-                xtype: 'button'
-            }]
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                items: [{
+                    scale: 'large',
+                    text: 'Выход',
+                    action: this.action,
+                    xtype: 'button'
+                }]
+            })]
         })];
         this.callParent(arguments);
     }
