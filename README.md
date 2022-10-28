@@ -1,4 +1,3 @@
-DB ddl:
 DROP TABLE "informix".humans3;
 
 CREATE TABLE "informix".humans3(
