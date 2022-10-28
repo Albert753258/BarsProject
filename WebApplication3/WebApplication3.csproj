@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.props" Condition="Exists('..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.props')" />
-    <Import Project="..\packages\FastReport.OpenSource.2022.3.11\build\FastReport.OpenSource.props" Condition="Exists('..\packages\FastReport.OpenSource.2022.3.11\build\FastReport.OpenSource.props')" />
     <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
@@ -45,14 +43,20 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Accessibility" />
-        <Reference Include="FastReport, Version=2022.3.11.0, Culture=neutral, PublicKeyToken=5ceb240df42bf6e8, processorArchitecture=MSIL">
-          <HintPath>..\packages\FastReport.OpenSource.2022.3.11\lib\net40\FastReport.dll</HintPath>
+        <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+          <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
         </Reference>
-        <Reference Include="FastReport.Compat, Version=2022.3.2.0, Culture=neutral, PublicKeyToken=406e1f4c3c8ef97e, processorArchitecture=MSIL">
-          <HintPath>..\packages\FastReport.Compat.2022.3.2\lib\net40\FastReport.Compat.dll</HintPath>
+        <Reference Include="FastReport">
+          <HintPath>..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net Trial\FastReport.dll</HintPath>
+        </Reference>
+        <Reference Include="FastReport.Web">
+          <HintPath>..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net Trial\Framework 4.0\FastReport.Web.dll</HintPath>
         </Reference>
         <Reference Include="IBM.Data.Informix">
           <HintPath>..\..\..\..\..\informix11\bin\netf20\IBM.Data.Informix.dll</HintPath>
+        </Reference>
+        <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+          <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CSharp" />
         <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -122,6 +126,12 @@
             <Private>True</Private>
             <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
         </Reference>
+        <Reference Include="Xceed.Document.NET, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\DocX.2.3.0\lib\net40\Xceed.Document.NET.dll</HintPath>
+        </Reference>
+        <Reference Include="Xceed.Words.NET, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\DocX.2.3.0\lib\net40\Xceed.Words.NET.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -143,6 +153,7 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include="BarsProject\app.js" />
+        <Content Include="BarsProject\app\button.css" />
         <Content Include="BarsProject\app\controller\Humans.js" />
         <Content Include="BarsProject\app\data\users.json" />
         <Content Include="BarsProject\app\model\Human.js" />
@@ -151,6 +162,7 @@
         <Content Include="BarsProject\app\view\SearchWindow.js" />
         <Content Include="BarsProject\app\view\HumanTable.js" />
         <Content Include="BarsProject\app\view\HumanWindow.js" />
+        <Content Include="BarsProject\arial.ttf" />
         <Content Include="BarsProject\extjs\bootstrap.js" />
         <Content Include="BarsProject\extjs\build.xml" />
         <Content Include="BarsProject\extjs\ext-all-debug-w-comments.js" />
@@ -3122,6 +3134,11 @@
         <Content Include="BarsProject\extjs\resources\themes\images\gray\window\icon-question.gif" />
         <Content Include="BarsProject\extjs\resources\themes\images\gray\window\icon-warning.gif" />
         <Content Include="BarsProject\extjs\version.properties" />
+        <Content Include="BarsProject\ux\grid\gridPrinterCss\cross.png" />
+        <Content Include="BarsProject\ux\grid\gridPrinterCss\print.css" />
+        <Content Include="BarsProject\ux\grid\gridPrinterCss\printer.png" />
+        <Content Include="BarsProject\ux\grid\Printer.js" />
+        <Content Include="BarsProject\ux\RowExpander.js" />
         <Content Include="Content\bootstrap-theme.css" />
         <Content Include="Content\bootstrap-theme.min.css" />
         <Content Include="Content\bootstrap.css" />
@@ -3205,11 +3222,7 @@
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         </PropertyGroup>
         <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-        <Error Condition="!Exists('..\packages\FastReport.OpenSource.2022.3.11\build\FastReport.OpenSource.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FastReport.OpenSource.2022.3.11\build\FastReport.OpenSource.props'))" />
-        <Error Condition="!Exists('..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.props'))" />
-        <Error Condition="!Exists('..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.targets'))" />
     </Target>
-    <Import Project="..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.targets" Condition="Exists('..\packages\FastReport.Data.Json.2022.3.8\build\net40\FastReport.Data.Json.targets')" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

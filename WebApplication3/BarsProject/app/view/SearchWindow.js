@@ -1,17 +1,19 @@
 Ext.define('BarsProject.view.SearchWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.searchwindow',
-
     title: 'Условия поиска',
     layout: 'fit',
-    width: '85%',
+    width: '90%',
+    style: {'background-color': 'red'},
     closable: false,
     modal: true,
-    height: '50%',
+    height: '60%',
     autoShow: true,
 
     initComponent: function() {
         this.items = [Ext.create('Ext.panel.Panel', {
+            frame: false,
+            bodyStyle: 'background-color: transparent;',
             layout: {
                 type: 'hbox',
                 align: 'stretch'
@@ -22,43 +24,55 @@ Ext.define('BarsProject.view.SearchWindow', {
                 items: [{
                     xtype: 'textfield',
                     fieldLabel: 'Фамилия:',
+                    width: 500,
+                    margin: 5,
                     name: 'surname'
                 },{
                     xtype: 'textfield',
                     fieldLabel: 'Имя:',
+                    width: 500,
+                    margin: 5,
                     name: 'fname'
                 },{
                     xtype: 'textfield',
                     fieldLabel: 'Отчество:',
+                    width: 500,
+                    margin: 5,
                     name: 'patronymic'
                 },{
                     xtype: 'datefield',
                     fieldLabel: 'Дата рождения с:',
                     format: 'd.m.Y',
+                    width: 500,
+                    margin: 5,
+                    startDay: 1,
                     name: 'birthday'
                 },{
                     xtype: 'datefield',
                     fieldLabel: 'Дата рождения по:',
                     format: 'd.m.Y',
+                    width: 500,
+                    margin: 5,
+                    startDay: 1,
                     name: 'birthday'
                 }]
             }), Ext.create('Ext.panel.Panel', {
-                flex: 1,
+                width: 150,
                 layout: {
                     type: 'vbox',
                     align: 'stretch'
                 },
                 items: [{
                     text: 'Выход',
-                    scale: 'large',
                     handler: function (){
                         this.up('window').close()
                     },
+                    margin: 5,
                     xtype: 'button'
                 },{
                     text: 'Начать поиск',
-                    scale: 'large',
                     action: 'search',
+                    margin: 5,
                     xtype: 'button'
                 }]
             })]

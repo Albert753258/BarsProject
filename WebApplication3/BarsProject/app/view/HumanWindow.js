@@ -2,7 +2,7 @@
     extend: 'Ext.window.Window',
     alias: 'widget.humanwindow',
 
-    title: 'Результаты поиска',
+    title: 'Список анкет',
     layout: 'fit',
     width: '85%',
     modal: true,
@@ -21,36 +21,39 @@
                 xtype: 'humantable',
                 flex: 10
             }, Ext.create('Ext.panel.Panel', {
-                flex: 1,
+                width: 100,
                 layout: {
                     type: 'vbox',
                     align: 'stretch'
                 },
                 items: [{
-                    scale: 'large',
                     text: 'Выход',
                     handler: function (){
-                        this.up('window').close()
+                        Ext.widget('humantable').getStore().data.removeAll();
+                        Ext.widget('humantable').reconfigure(Ext.widget('humantable').getStore());
+                        Ext.widget('humantable').store.currentPage = 1;
+                        this.up('window').close();
                     },
+                    margin: 5,
                     xtype: 'button'
                 },{
-                    scale: 'large',
                     text: 'Добавить',
                     action: 'add',
+                    margin: 5,
                     xtype: 'button'
                 },{
-                    scale: 'large',
                     text: 'Изменить',
+                    margin: 5,
                     action: 'edit',
                     xtype: 'button'
                 },{
-                    scale: 'large',
                     text: 'Удалить',
+                    margin: 5,
                     action: 'delete',
                     xtype: 'button'
                 },{
-                    scale: 'large',
                     text: 'Печать',
+                    margin: 5,
                     action: 'print',
                     xtype: 'button'
                 }]
