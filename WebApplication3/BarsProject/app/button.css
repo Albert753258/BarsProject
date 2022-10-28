@@ -1,9 +1,9 @@
 .my-edit-window .x-window-header-default-top.x-window-header-default {
-    background-color: green;
-    border-color: green;
+    background-color: #8aff95;
+    border-color: #8aff95;
 }
 
 .my-add-window .x-window-header-default-top.x-window-header-default{
-    background-color: red;
-    border-color: red;
+    background-color: #ff8282;
+    border-color: #ff8282;
 }

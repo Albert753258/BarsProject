@@ -55,7 +55,7 @@
         var human = store.getAt(store.indexOf(window.sRec));
         var form = Ext.getCmp('hmform');
         //alert("New: " + form.items.get(0).getValue());
-        if(form.items.get(0).getValue() != human.get('surname') || form.items.get(1).getValue() != human.get('fname') || form.items.get(2).getValue() != human.get('patronymic') || Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat) != Ext.Date.format(human.get("birthday"), Ext.Date.patterns.MyFormat))
+        if(form.items.get(0).getValue().toUpperCase() != human.get('surname') || form.items.get(1).getValue().toUpperCase() != human.get('fname') || form.items.get(2).getValue().toUpperCase() != human.get('patronymic') || Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat) != Ext.Date.format(human.get("birthday"), Ext.Date.patterns.MyFormat))
         {
             Ext.Msg.show({
                 title:'Сохранить изменения?',
@@ -204,7 +204,7 @@
         var form = Ext.getCmp('hmform');
         if(form.items.get(1).getValue() == '' && form.items.get(0).getValue() == '' && form.items.get(2).getValue() == '' && form.items.get(3).rawValue == ''){
             button.up('window').close();
-            close();
+            //close();
         }
         else{
             Ext.Msg.show({

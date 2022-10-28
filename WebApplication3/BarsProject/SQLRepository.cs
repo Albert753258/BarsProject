@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.WebPages;
 using IBM.Data.Informix;
-using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InformixConnector
 {
@@ -16,6 +13,8 @@ namespace InformixConnector
         {
             connection = new IfxConnection("Host=" + host + ";Service=" + service + ";Server=" + serverName + ";Database=" + DBName + ";User ID=" + userName + ";password=" + password + ";CLIENT_LOCALE=ru_RU.CP1251;DB_LOCALE=ru_RU.915");
             connection.Open();
+            //новый для каждого пользователя
+            
         }
 
         public string addHuman(Human human, string confirm)
@@ -39,15 +38,17 @@ namespace InformixConnector
                         .count == "0")
                 {
                     string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
-                    IfxCommand command = new IfxCommand(cmd, connection);
-                    command.ExecuteNonQuery();
-                    string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
-                    IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
-                    IfxDataReader reader = findLastIdCommand.ExecuteReader();
-                    reader.Read();
-                    int lastId = reader.GetInt32(0);
-                    string toReturn = $"{{ success: true, id: '{lastId}'}}";
-                    return toReturn;
+                    using (IfxCommand command = new IfxCommand(cmd, connection))
+                    {
+                        command.ExecuteNonQuery();
+                        string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
+                        IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
+                        IfxDataReader reader = findLastIdCommand.ExecuteReader();
+                        reader.Read();
+                        int lastId = reader.GetInt32(0);
+                        string toReturn = $"{{ success: true, id: '{lastId}'}}";
+                        return toReturn;
+                    }
                 }
                 else
                 {
@@ -77,7 +78,7 @@ namespace InformixConnector
                 }
                 else
                 {
-                    return "{'success': true, 'error': 'duplicate'}";;
+                    return "{'success': true, 'error': 'duplicate'}";
                 }
             }
         }

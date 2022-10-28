@@ -85,4 +85,5 @@ namespace WebApplication3.Controllers
             return File(stream, "application/pdf");
         }
     }
+    //todo слишком яркий красный
 }
