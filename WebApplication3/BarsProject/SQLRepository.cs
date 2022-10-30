@@ -83,7 +83,7 @@ namespace InformixConnector
                 command.ExecuteNonQuery();
                 connection.Close();
             }
-            return "";
+            return "{'success': true}";
         }
         public string editHuman(Human human, string confirm)
         {
