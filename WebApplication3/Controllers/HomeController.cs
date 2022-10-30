@@ -75,15 +75,12 @@ namespace WebApplication3.Controllers
             set.Tables.Add(table);
             report.Load(@"C:\Users\albert\Documents\test.frx");
             report.Dictionary.Clear();
-            //DataSourceCollection sourceBase = report.Dictionary.DataSources;
             report.RegisterData(table, "JSON");
             report.GetDataSource("JSON").Enabled = true;
-            //((Table)report.FindObject("Table1")).DataSource = report.Dictionary.DataSources[0];
             report.Prepare();
             report.Export(new PDFExport(), stream);
             stream.Position = 0;
             return File(stream, "application/pdf");
         }
     }
-    //todo слишком яркий красный
 }
