@@ -16,8 +16,8 @@ namespace WebApplication3.Controllers
     {
         class CountClass
         {
-            public string count;
             public List<Human> humans;
+            public string count;
 
             public CountClass(string count, List<Human> humans)
             {
@@ -32,9 +32,9 @@ namespace WebApplication3.Controllers
 
         public ActionResult SearchHuman(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, string page, string limit)
         {
-            SQLRepository.Pair<List<Human>> pair = MvcApplication.repository.searchHuman(surname, fname, patronymic, birthdayFrom,
+            SQLRepository.Pair<List<Human>, string> pair = MvcApplication.repository.searchHuman(surname, fname, patronymic, birthdayFrom,
                 birthdayTo, Convert.ToInt32(page), limit);
-            string toReturn = JsonConvert.SerializeObject(new CountClass(pair.count, pair.humans));
+            string toReturn = JsonConvert.SerializeObject(new CountClass(pair.second, pair.first));
             return Content(toReturn);
         }
 
@@ -55,9 +55,9 @@ namespace WebApplication3.Controllers
         }
         public ActionResult GenReport(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo)
         {
-            SQLRepository.Pair<List<Human>> pair = MvcApplication.repository.searchHuman(surname, fname, patronymic, birthdayFrom,
+            SQLRepository.Pair<List<Human>, string> pair = MvcApplication.repository.searchHuman(surname, fname, patronymic, birthdayFrom,
                 birthdayTo, 0, null);
-            List<Human> humans = pair.humans;
+            List<Human> humans = pair.first;
             MemoryStream stream = new MemoryStream();
             Report report = new Report();
             DataTable table = new DataTable();

@@ -8,73 +8,97 @@ namespace InformixConnector
 {
     public class SQLRepository
     {
-        public IfxConnection connection;
+        private string host;
+        private string service;
+        private string serverName;
+        private string DBName;
+        private string userName;
+        private string password;
         public SQLRepository(string host, string service, string serverName, string DBName, string userName, string password)
         {
-            connection = new IfxConnection("Host=" + host + ";Service=" + service + ";Server=" + serverName + ";Database=" + DBName + ";User ID=" + userName + ";password=" + password + ";CLIENT_LOCALE=ru_RU.CP1251;DB_LOCALE=ru_RU.915");
-            connection.Open();
+            this.host = host;
+            this.service = service;
+            this.serverName = serverName;
+            this.DBName = DBName;
+            this.userName = userName;
+            this.password = password;
             //todo новый для каждого пользователя
-            
         }
 
+        private IfxConnection createConnection()
+        {
+            IfxConnection connection = new IfxConnection("Host=" + host + ";Service=" + service + ";Server=" + serverName + ";Database=" + DBName + ";User ID=" + userName + ";password=" + password + ";CLIENT_LOCALE=ru_RU.CP1251;DB_LOCALE=ru_RU.915");
+            connection.Open();
+            return connection;
+        }
+
+        private string addHuman(Human human, IfxConnection connection)
+        {
+            //todo using
+            string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
+            IfxCommand command = new IfxCommand(cmd, connection);
+            command.ExecuteNonQuery();
+            string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
+            IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
+            IfxDataReader reader = findLastIdCommand.ExecuteReader();
+            reader.Read();
+            int lastId = reader.GetInt32(0);
+            string toReturn = $"{{ success: true, id: '{lastId}'}}";
+            return toReturn;
+        }
         public string addHuman(Human human, string confirm)
         {
+            IfxConnection connection = createConnection();
             if (!confirm.IsEmpty())
             {
-                string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
-                IfxCommand command = new IfxCommand(cmd, connection);
-                command.ExecuteNonQuery();
-                string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
-                IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
-                IfxDataReader reader = findLastIdCommand.ExecuteReader();
-                reader.Read();
-                int lastId = reader.GetInt32(0);
-                string toReturn = $"{{ success: true, id: '{lastId}'}}";
-                return toReturn;
+                return addHuman(human, connection);
             }
             else
             {
-                if (genStrForSearch(human.surname, human.fname, human.patronymic, human.birthday, human.birthday, 0, "100")
-                        .count == "0")
+                if (getResultsCount(human.surname, human.fname, human.patronymic, human.birthday, human.birthday, 0, "100", connection) == "0")
                 {
-                    string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
-                    using (IfxCommand command = new IfxCommand(cmd, connection))
-                    {
-                        command.ExecuteNonQuery();
-                        string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
-                        IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
-                        IfxDataReader reader = findLastIdCommand.ExecuteReader();
-                        reader.Read();
-                        int lastId = reader.GetInt32(0);
-                        string toReturn = $"{{ success: true, id: '{lastId}'}}";
-                        return toReturn;
-                    }
+                    return addHuman(human, connection);
+                    // string cmd = $"insert into {Settings.tableName}(last_name, first_name, patronymic, birthday) values({human.toString()})";
+                    // using (IfxCommand command = new IfxCommand(cmd, connection))
+                    // {
+                    //     command.ExecuteNonQuery();
+                    //     string findLastId = "select DBINFO ('sqlca.sqlerrd1') from table(set{1})";
+                    //     IfxCommand findLastIdCommand = new IfxCommand(findLastId, connection);
+                    //     IfxDataReader reader = findLastIdCommand.ExecuteReader();
+                    //     reader.Read();
+                    //     int lastId = reader.GetInt32(0);
+                    //     string toReturn = $"{{ success: true, id: '{lastId}'}}";
+                    //     return toReturn;
+                    // }
                 }
                 else
                 {
                     return "{'success': true, 'error': 'duplicate'}";;
                 }
             }
+            //todo дублирование
+        }
 
+        private string editHuman(Human human, IfxConnection connection)
+        {
+            //todo using
+            string cmd = $"UPDATE {Settings.tableName} SET (last_name, first_name, patronymic, birthday) = ({human.toString()}) where id={human.id}";
+            IfxCommand command = new IfxCommand(cmd, connection);
+            command.ExecuteNonQuery();
+            return "";
         }
         public string editHuman(Human human, string confirm)
         {
+            IfxConnection connection = createConnection();
             if (!confirm.IsEmpty())
             {
-                string cmd = $"UPDATE {Settings.tableName} SET (last_name, first_name, patronymic, birthday) = ({human.toString()}) where id={human.id}";
-                IfxCommand command = new IfxCommand(cmd, connection);
-                command.ExecuteNonQuery();
-                return "";
+                return editHuman(human, connection);
             }
             else
             {
-                if (genStrForSearch(human.surname, human.fname, human.patronymic, human.birthday, human.birthday, 0, "100")
-                        .count == "0")
+                if (getResultsCount(human.surname, human.fname, human.patronymic, human.birthday, human.birthday, 0, "100", connection) == "0")
                 {
-                    string cmd = $"UPDATE {Settings.tableName} SET (last_name, first_name, patronymic, birthday) = ({human.toString()}) where id={human.id}";
-                    IfxCommand command = new IfxCommand(cmd, connection);
-                    command.ExecuteNonQuery();
-                    return "{'success': true}";
+                    return editHuman(human, connection);
                 }
                 else
                 {
@@ -83,7 +107,7 @@ namespace InformixConnector
             }
         }
 
-        public Pair<string> genStrForSearch(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit)
+        public Pair<string, string> genStrForSearch(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit)
         {
             int skipNum;
             TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
@@ -97,7 +121,9 @@ namespace InformixConnector
                 skipNum = (page - 1) * Convert.ToInt32(limit);
                 command = $"select skip {skipNum} limit {limit} * from {Settings.tableName} where ";
             }
+            //команда для нахождения количества результатов поиска
             string countCommand = $"select count(*) from {Settings.tableName} where ";
+            //если нет условий поиска( все параметры пустые)
             if (surname.IsEmpty() && fname.IsEmpty() && patronymic.IsEmpty() && birthdayFrom.IsEmpty() && birthdayTo.IsEmpty())
             {
                 if (limit.IsEmpty())
@@ -155,50 +181,63 @@ namespace InformixConnector
                 {
                     command += $" birthday <= '{textInfo.ToUpper(birthdayTo)}'";
                     countCommand += $" birthday <= '{textInfo.ToUpper(birthdayTo)}'";
-                    //
                 }
             }
-
+            //удаление " AND" в конце
             int length = command.Length;
             if (command[length - 1] == 'D' && command[length - 2] == 'N' && command[length - 3] == 'A' && command[length - 4] == ' ' && command[length - 5] == '\'')
             {
                 command = command.Remove(length - 4, 4);
                 countCommand = countCommand.Remove(countCommand.Length - 4, 4);
             }
+            //todo using
             command += " order by last_name, first_name, patronymic, birthday";
-            IfxCommand countCmd = new IfxCommand(countCommand, connection);
-            IfxDataReader countReader = countCmd.ExecuteReader();
-            countReader.Read();
-            Pair<string> pair = new Pair<string>();
-            pair.humans = command;
-            pair.count = countReader.GetString(0);
-            return pair;
+            //IfxCommand cmd = new IfxCommand(command, connection);
+            //IfxCommand countCmd = new IfxCommand(countCommand, connection);
+            return new Pair<string, string>
+            {
+                first = command,
+                second = countCommand
+            };
         }
-        public Pair<List<Human>> searchHuman(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit)
+        public Pair<List<Human>, string> searchHuman(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit)
         {
-            Pair<string> stringPair = genStrForSearch(surname, fname, patronymic, birthdayFrom, birthdayTo, page, limit);
-            IfxCommand cmd = new IfxCommand(stringPair.humans, connection);
-            IfxDataReader reader = cmd.ExecuteReader();
-            Pair<List<Human>> pair = new Pair<List<Human>>();
+            //todo using
+            IfxConnection connection = createConnection();
+            Pair<string, string> stringPair = genStrForSearch(surname, fname, patronymic, birthdayFrom, birthdayTo, page, limit);
+            IfxDataReader reader = new IfxCommand(stringPair.first, connection).ExecuteReader();
+            IfxDataReader countReader = new IfxCommand(stringPair.second, connection).ExecuteReader();
+            countReader.Read();
+            Pair<List<Human>, string> pair = new Pair<List<Human>, string>();
             List<Human> humans = new List<Human>();
             while (reader.Read())
             {
                 humans.Add(new Human(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4).Replace('-', '.')));
             }
-            pair.humans = humans;
-            pair.count = stringPair.count;
+            pair.first = humans;
+            pair.second = countReader.GetString(0);
             return pair;
         }
-
-        public class Pair<T>
+        
+        public string getResultsCount(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit, IfxConnection connection)
         {
-            public T humans;
-            public string count;
+            //todo using
+            Pair<string, string> stringPair = genStrForSearch(surname, fname, patronymic, birthdayFrom, birthdayTo, page, limit);
+            IfxDataReader countReader = new IfxCommand(stringPair.second, connection).ExecuteReader();
+            countReader.Read();
+            return countReader.GetString(0);
+        }
+        
+        public class Pair<T, U>
+        {
+            public T first;
+            public U second;
         }
         public void delHuman(string id)
         {
+            //todo using
             string cmd = $"delete from {Settings.tableName} where id={id}";
-            IfxCommand command = new IfxCommand(cmd, connection);
+            IfxCommand command = new IfxCommand(cmd, createConnection());
             command.ExecuteNonQuery();
         }
     }
