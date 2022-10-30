@@ -85,10 +85,11 @@
                                             title:'Изменить?',
                                             icon: Ext.Msg.QUESTION,
                                             msg: 'В базе уже есть этот человек',
-                                            buttons: Ext.Msg.YESNO,
+                                            buttons: Ext.Msg.YESNOCANCEL,
                                             buttonText: {
                                                 yes: 'Да',
-                                                no: 'Нет'
+                                                no: 'Нет',
+                                                cancel: 'Отмена'
                                             },
                                             fn: function(btn) {
                                                 if (btn === 'yes') {
@@ -122,6 +123,8 @@
                                                     });
                                                 } else if (btn === 'no') {
                                                     button.up('window').close();
+                                                    close();
+                                                }  else {
                                                     close();
                                                 }
                                             }
@@ -211,11 +214,12 @@
             Ext.Msg.show({
                 title:'Добавить?',
                 msg: 'Вы уверены, что хотите добавить человека?',
-                buttons: Ext.Msg.YESNO,
+                buttons: Ext.Msg.YESNOCANCEL,
                 icon: Ext.Msg.QUESTION,
                 buttonText: {
                     yes: 'Да',
-                    no: 'Нет'
+                    no: 'Нет',
+                    cancel: 'Отмена'
                 },
                 fn: function(btn) {
                     if (btn === 'yes') {
@@ -239,10 +243,11 @@
                                             title:'Добавить?',
                                             icon: Ext.Msg.QUESTION,
                                             msg: 'В базе уже есть этот человек, уверенны что хотите добавить?',
-                                            buttons: Ext.Msg.YESNO,
+                                            buttons: Ext.Msg.YESNOCANCEL,
                                             buttonText: {
                                                 yes: 'Да',
-                                                no: 'Нет'
+                                                no: 'Нет',
+                                                cancel: 'Отмена'
                                             },
                                             fn: function(btn) {
                                                 if (btn === 'yes') {
@@ -271,6 +276,8 @@
                                                 } else if (btn === 'no') {
                                                     button.up('window').close();
                                                     close();
+                                                }  else {
+                                                    close();
                                                 }
                                             }
                                         });
@@ -298,6 +305,8 @@
                         
                     } else if (btn === 'no') {
                         button.up('window').close();
+                        close();
+                    }  else {
                         close();
                     }
                 }
