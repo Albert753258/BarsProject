@@ -36,7 +36,7 @@
         var store = Ext.widget('humantable').getStore();
         if(store.data.length != 0){
             var form = Ext.getCmp('searchform')
-            window.open("/home/GenReport?surname=" + form.items.get(0).getValue() + "&fname=" + form.items.get(1).getValue() + "&birthdayFrom=" + Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat) + "&birthdayTo=" + Ext.Date.format(form.items.get(4).getValue(), Ext.Date.patterns.MyFormat) + "&patronymic=" + form.items.get(2).getValue()
+            window.open("/home/GenReport?surname=" + form.items.get(0).getValue().toUpperCase() + "&fname=" + form.items.get(1).getValue().toUpperCase() + "&birthdayFrom=" + Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat) + "&birthdayTo=" + Ext.Date.format(form.items.get(4).getValue(), Ext.Date.patterns.MyFormat) + "&patronymic=" + form.items.get(2).getValue().toUpperCase()
                 , "_blank");
         }
         else {
