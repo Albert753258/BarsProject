@@ -14,4 +14,7 @@ CREATE INDEX "informix".birthday_index ON "informix".humans3(birthday);
 
 CREATE INDEX "informix".name_patronymic_birthday_index ON "informix".humans3(first_name, patronymic, birthday);
 
+ALTER TABLE "informix".humans3 ADD CONSTRAINT PRIMARY KEY 
+   (id) CONSTRAINT "informix".u108_14;
+
 GRANT select, update, insert, delete, index ON humans3 TO public AS informix;
