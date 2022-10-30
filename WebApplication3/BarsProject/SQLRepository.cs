@@ -110,7 +110,7 @@ namespace InformixConnector
         private Pair<string, string> genStrForSearch(string surname, string fname, string patronymic, string birthdayFrom, string birthdayTo, int page, string limit)
         {
             int skipNum;
-            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            //TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
             string command = "";
             if (limit.IsEmpty())
             {
@@ -142,18 +142,18 @@ namespace InformixConnector
             {
                 if (!surname.IsEmpty())
                 {
-                    command += $"last_name matches '{textInfo.ToUpper(surname)}' AND";
-                    countCommand += $"last_name matches '{textInfo.ToUpper(surname)}' AND";
+                    command += $"last_name matches '{surname}' AND";
+                    countCommand += $"last_name matches '{surname}' AND";
                 }
                 if (!fname.IsEmpty())
                 {
-                    command += $" first_name matches '{textInfo.ToUpper(fname)}' AND";
-                    countCommand += $" first_name matches '{textInfo.ToUpper(fname)}' AND";
+                    command += $" first_name matches '{fname}' AND";
+                    countCommand += $" first_name matches '{fname}' AND";
                 }
                 if (!patronymic.IsEmpty())
                 {
-                    command += $" patronymic matches '{textInfo.ToUpper(patronymic)}' AND";
-                    countCommand += $" patronymic matches '{textInfo.ToUpper(patronymic)}' AND";
+                    command += $" patronymic matches '{patronymic}' AND";
+                    countCommand += $" patronymic matches '{patronymic}' AND";
                 }
                 if (!birthdayFrom.IsEmpty())
                 {
@@ -172,15 +172,15 @@ namespace InformixConnector
                     }
                     else
                     {
-                        command += $" birthday >= '{textInfo.ToUpper(birthdayFrom)}'";
-                        countCommand += $" birthday >= '{textInfo.ToUpper(birthdayFrom)}'";
+                        command += $" birthday >= '{birthdayFrom}'";
+                        countCommand += $" birthday >= '{birthdayFrom}'";
                     }
                     //
                 }
                 else if (!birthdayTo.IsEmpty())
                 {
-                    command += $" birthday <= '{textInfo.ToUpper(birthdayTo)}'";
-                    countCommand += $" birthday <= '{textInfo.ToUpper(birthdayTo)}'";
+                    command += $" birthday <= '{birthdayTo}'";
+                    countCommand += $" birthday <= '{birthdayTo}'";
                 }
             }
             //удаление " AND" в конце

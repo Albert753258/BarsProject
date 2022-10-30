@@ -48,13 +48,12 @@
         }
     },
     editHuman: function(button){
-        //alert("startedit");
         var store = Ext.widget('humantable').getStore();
         var grid = Ext.widget('humantable');
         var window = button.up('window');
         var human = store.getAt(store.indexOf(window.sRec));
         var form = Ext.getCmp('hmform');
-        //alert("New: " + form.items.get(0).getValue());
+        //проверка на наличие изменений
         if(form.items.get(0).getValue().toUpperCase() != human.get('surname') || form.items.get(1).getValue().toUpperCase() != human.get('fname') || form.items.get(2).getValue().toUpperCase() != human.get('patronymic') || Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat) != Ext.Date.format(human.get("birthday"), Ext.Date.patterns.MyFormat))
         {
             Ext.Msg.show({
@@ -68,17 +67,19 @@
                 },
                 fn: function(btn) {
                     if (btn === 'yes') {
+                        //проверка данных на валидность и наличие данных(отчество может быть пустым!)
                         if(form.isValid() && form.items.get(0).getValue() != '' && form.items.get(1).getValue() != '' && form.items.get(3).rawValue != ''){
                             Ext.Ajax.request({
                                 url: '/home/EditHuman',
                                 params: {
                                     "id": human.get("id"),
-                                    "fname": form.items.get(1).getValue(),
-                                    "surname": form.items.get(0).getValue(),
+                                    "fname": form.items.get(1).getValue().toUpperCase(),
+                                    "surname": form.items.get(0).getValue().toUpperCase(),
                                     "birthday": Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat),
-                                    "patronymic": form.items.get(2).getValue()
+                                    "patronymic": form.items.get(2).getValue().toUpperCase()
                                 },
                                 success: function (response){
+                                    //проверка на дубликаты
                                     if(Ext.decode(response.responseText).error == 'duplicate'){
                                         Ext.Msg.show({
                                             title:'Изменить?',
@@ -95,10 +96,10 @@
                                                         url: '/home/EditHuman',
                                                         params: {
                                                             "id": human.get("id"),
-                                                            "fname": form.items.get(1).getValue(),
-                                                            "surname": form.items.get(0).getValue(),
+                                                            "fname": form.items.get(1).getValue().toUpperCase(),
+                                                            "surname": form.items.get(0).getValue().toUpperCase(),
                                                             "birthday": Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat),
-                                                            "patronymic": form.items.get(2).getValue(),
+                                                            "patronymic": form.items.get(2).getValue().toUpperCase(),
                                                             "confirm": 'yes'
                                                         },
                                                         success: function (response) {
@@ -192,19 +193,19 @@
         humantable.store.proxy.extraParams = {
             start: 0,
             limit: 100,
-            surname: form.items.get(0).getValue(),
-            fname: form.items.get(1).getValue(),
+            surname: form.items.get(0).getValue().toUpperCase(),
+            fname: form.items.get(1).getValue().toUpperCase(),
             birthdayFrom: Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat),
             birthdayTo: Ext.Date.format(form.items.get(4).getValue(), Ext.Date.patterns.MyFormat),
-            patronymic: form.items.get(2).getValue()
+            patronymic: form.items.get(2).getValue().toUpperCase()
         };
         humantable.store.load();
     },
     addNewHuman: function(button){
         var form = Ext.getCmp('hmform');
+        // проверка введены ли данные
         if(form.items.get(1).getValue() == '' && form.items.get(0).getValue() == '' && form.items.get(2).getValue() == '' && form.items.get(3).rawValue == ''){
             button.up('window').close();
-            //close();
         }
         else{
             Ext.Msg.show({
@@ -221,16 +222,18 @@
                         Ext.Date.patterns={
                             MyFormat: "d.m.Y"
                         };
+                        //проверка данных на валидность и наличие данных(отчество может быть пустым!)
                         if(form.isValid() && form.items.get(0).getValue() != '' && form.items.get(1).getValue() != '' && form.items.get(3).rawValue != ''){
                             Ext.Ajax.request({
                                 url: '/home/AddHuman',
                                 params: {
-                                    "fname": form.items.get(1).getValue(),
-                                    "surname": form.items.get(0).getValue(),
+                                    "fname": form.items.get(1).getValue().toUpperCase(),
+                                    "surname": form.items.get(0).getValue().toUpperCase(),
                                     "birthday": Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat),
-                                    "patronymic": form.items.get(2).getValue()
+                                    "patronymic": form.items.get(2).getValue().toUpperCase()
                                 },
                                 success: function (response){
+                                    // проверка на дубликаты
                                     if(Ext.decode(response.responseText).error == 'duplicate'){
                                         Ext.Msg.show({
                                             title:'Добавить?',
@@ -246,10 +249,10 @@
                                                     Ext.Ajax.request({
                                                         url: '/home/AddHuman',
                                                         params: {
-                                                            "fname": form.items.get(1).getValue(),
-                                                            "surname": form.items.get(0).getValue(),
+                                                            "fname": form.items.get(1).getValue().toUpperCase(),
+                                                            "surname": form.items.get(0).getValue().toUpperCase(),
                                                             "birthday": Ext.Date.format(form.items.get(3).getValue(), Ext.Date.patterns.MyFormat),
-                                                            "patronymic": form.items.get(2).getValue(),
+                                                            "patronymic": form.items.get(2).getValue().toUpperCase(),
                                                             "confirm": "yes"
                                                         },
                                                         success: function (response){

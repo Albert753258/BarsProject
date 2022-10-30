@@ -29,8 +29,7 @@ namespace InformixConnector
 
         public string toString()
         {
-            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-            return $"'{textInfo.ToUpper(surname)}', '{textInfo.ToUpper(fname)}', '{textInfo.ToUpper(patronymic)}', '{textInfo.ToUpper(birthday)}'";
+            return $"'{surname}', '{fname}', '{patronymic}', '{birthday}'";
         }
     }
 }
