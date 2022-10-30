@@ -57,7 +57,7 @@ Ext.define('BarsProject.view.SearchWindow', {
                     name: 'birthday'
                 }]
             }), Ext.create('Ext.panel.Panel', {
-                width: 150,
+                width: 110,
                 layout: {
                     type: 'vbox',
                     align: 'stretch'
