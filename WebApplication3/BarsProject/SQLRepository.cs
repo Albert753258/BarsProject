@@ -13,7 +13,7 @@ namespace InformixConnector
         {
             connection = new IfxConnection("Host=" + host + ";Service=" + service + ";Server=" + serverName + ";Database=" + DBName + ";User ID=" + userName + ";password=" + password + ";CLIENT_LOCALE=ru_RU.CP1251;DB_LOCALE=ru_RU.915");
             connection.Open();
-            //новый для каждого пользователя
+            //todo новый для каждого пользователя
             
         }
 

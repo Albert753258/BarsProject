@@ -1,1 +1,5 @@
 packages/
+WebApplication3/obj/Debug/WebApplication3.pdb
+WebApplication3/obj/Debug/WebApplication3.dll
+./WebApplication3/bin/*
+.gitignore
