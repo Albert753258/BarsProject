@@ -1,3 +1,4 @@
+Скрипт для создания БД(informox):
 DROP TABLE "informix".humans3;
 
 CREATE TABLE "informix".humans3(
